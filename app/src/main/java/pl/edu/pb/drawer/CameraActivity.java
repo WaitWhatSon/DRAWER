@@ -2,8 +2,12 @@ package pl.edu.pb.drawer;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
@@ -31,6 +35,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -39,8 +46,9 @@ public class CameraActivity extends AppCompatActivity {
     CameraDevice mCamera = null;
 
     TextureView photo_texture;
-    FloatingActionButton take_photo_button;
-    FloatingActionButton back_camera_button;
+    Button back_camera_button;
+    Button take_photo_button;
+    Button next_camera_button;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -71,6 +79,13 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
 
+        back_camera_button = findViewById(R.id.back_camera_button);
+        back_camera_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startPreview();
+            }
+        });
         take_photo_button = findViewById(R.id.take_photo_camera_button);
         take_photo_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,11 +93,13 @@ public class CameraActivity extends AppCompatActivity {
                 takePhoto();
             }
         });
-        back_camera_button = findViewById(R.id.back_camera_button);
-        back_camera_button.setOnClickListener(new View.OnClickListener() {
+        next_camera_button = findViewById(R.id.next_camera_button);
+        next_camera_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startPreview();
+                saveToInternalStorage(photo_texture.getBitmap());
+                Intent intent = new Intent(CameraActivity.this, EditActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -121,7 +138,7 @@ public class CameraActivity extends AppCompatActivity {
         RectF preview = new RectF(0, 0, 640, 480);
         RectF texture = new RectF(0, 0, photo_texture.getWidth(), photo_texture.getHeight());
         matrix.setRectToRect(preview, texture, Matrix.ScaleToFit.FILL);
-        matrix.postScale(1.f, 1.f, preview.centerX(), preview.centerY());
+        //matrix.postScale(1.f, 1.f, preview.centerX(), preview.centerY());
         photo_texture.setTransform(matrix);
         SurfaceTexture surface = photo_texture.getSurfaceTexture();
         surface.setDefaultBufferSize(640, 480);
@@ -155,7 +172,7 @@ public class CameraActivity extends AppCompatActivity {
         RectF preview = new RectF(0, 0, 640, 480);
         RectF texture = new RectF(0, 0, photo_texture.getWidth(), photo_texture.getHeight());
         matrix.setRectToRect(preview, texture, Matrix.ScaleToFit.FILL);
-        matrix.postScale(1.f, 1.f, preview.centerX(), preview.centerY());
+        //matrix.postScale(1.f, 1.f, preview.centerX(), preview.centerY());
         photo_texture.setTransform(matrix);
         SurfaceTexture surface = photo_texture.getSurfaceTexture();
         surface.setDefaultBufferSize(640, 480);
@@ -181,6 +198,30 @@ public class CameraActivity extends AppCompatActivity {
                     }, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void saveToInternalStorage(Bitmap bitmapImage){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath = new File(directory,"image.jpg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert fos != null;
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

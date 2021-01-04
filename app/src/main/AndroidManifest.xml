@@ -5,8 +5,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
     <queries>
@@ -29,9 +28,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DRAWER">
         <activity
+            android:name=".EditActivity"
+            android:label="@string/title_activity_edit"
+            android:theme="@style/Theme.DRAWER.NoActionBar"></activity>
+        <activity
             android:name=".GalleryActivity"
             android:label="@string/title_activity_gallery"
-            android:theme="@style/Theme.DRAWER.NoActionBar"></activity>
+            android:theme="@style/Theme.DRAWER.NoActionBar" />
         <activity
             android:name=".CameraActivity"
             android:label="@string/title_activity_camera"

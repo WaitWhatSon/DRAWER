@@ -6,17 +6,13 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        tools:ignore="MissingConstraints">
         <ImageView
-            android:id="@+id/loaded_picture_view"
+            android:id="@+id/editing_picture_view"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="15dp"/>
+            android:layout_margin="15dp"
+            tools:ignore="MissingConstraints" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
@@ -24,28 +20,20 @@
             android:layout_gravity="center"
             tools:ignore="MissingConstraints">
             <Button
-                android:id="@+id/button_return_from_load_picture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:layout_margin="5dp"
-                android:text="@string/back"/>
-            <Button
                 android:id="@+id/button_load_picture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:layout_margin="5dp"
-                android:text="@string/load"/>
+                android:text="Load Picture"/>
             <Button
                 android:id="@+id/button_edit_loaded_picture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:layout_margin="5dp"
-                android:text="@string/edit"/>
+                android:text="Edit Picture"/>
         </LinearLayout>
-    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
