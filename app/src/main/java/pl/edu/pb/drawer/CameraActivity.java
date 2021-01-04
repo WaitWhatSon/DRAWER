@@ -1,6 +1,8 @@
 package pl.edu.pb.drawer;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -21,11 +23,13 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import java.util.Arrays;
 
@@ -33,6 +37,10 @@ import java.util.Arrays;
 public class CameraActivity extends AppCompatActivity {
 
     CameraDevice mCamera = null;
+
+    TextureView photo_texture;
+    FloatingActionButton take_photo_button;
+    FloatingActionButton back_camera_button;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -50,6 +58,8 @@ public class CameraActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        photo_texture = findViewById(R.id.texture);
+
         startCamera();
 
         FloatingActionButton button_photo = findViewById(R.id.start_camera);
@@ -61,6 +71,20 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
 
+        take_photo_button = findViewById(R.id.take_photo_camera_button);
+        take_photo_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takePhoto();
+            }
+        });
+        back_camera_button = findViewById(R.id.back_camera_button);
+        back_camera_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startPreview();
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -93,14 +117,13 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void startPreview() {
-        TextureView textureView = findViewById(R.id.texture);
         Matrix matrix = new Matrix();
         RectF preview = new RectF(0, 0, 640, 480);
-        RectF texture = new RectF(0, 0, textureView.getWidth(), textureView.getHeight());
+        RectF texture = new RectF(0, 0, photo_texture.getWidth(), photo_texture.getHeight());
         matrix.setRectToRect(preview, texture, Matrix.ScaleToFit.FILL);
-        matrix.postScale(1.5f, 1.5f, preview.centerX(), preview.centerY());
-        textureView.setTransform(matrix);
-        SurfaceTexture surface = textureView.getSurfaceTexture();
+        matrix.postScale(1.f, 1.f, preview.centerX(), preview.centerY());
+        photo_texture.setTransform(matrix);
+        SurfaceTexture surface = photo_texture.getSurfaceTexture();
         surface.setDefaultBufferSize(640, 480);
         Surface s = new Surface(surface);
         try {
@@ -127,4 +150,37 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
+    private void takePhoto() {
+        Matrix matrix = new Matrix();
+        RectF preview = new RectF(0, 0, 640, 480);
+        RectF texture = new RectF(0, 0, photo_texture.getWidth(), photo_texture.getHeight());
+        matrix.setRectToRect(preview, texture, Matrix.ScaleToFit.FILL);
+        matrix.postScale(1.f, 1.f, preview.centerX(), preview.centerY());
+        photo_texture.setTransform(matrix);
+        SurfaceTexture surface = photo_texture.getSurfaceTexture();
+        surface.setDefaultBufferSize(640, 480);
+        Surface s = new Surface(surface);
+        try {
+            CaptureRequest.Builder request = mCamera.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+            request.addTarget(s);
+            mCamera.createCaptureSession(
+                    Arrays.asList(s),
+                    new CameraCaptureSession.StateCallback() {
+                        @Override
+                        public void onConfigured(@NonNull CameraCaptureSession session) {
+                            request.set(CaptureRequest.CONTROL_MODE, CaptureRequest.CONTROL_MODE_AUTO);
+                            try {
+                                session.capture(request.build(), null, null);
+                            } catch (CameraAccessException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        @Override
+                        public void onConfigureFailed(@NonNull CameraCaptureSession session) {
+                        }
+                    }, null);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
 }

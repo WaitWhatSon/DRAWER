@@ -85,6 +85,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        camera_button.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Snackbar.make(view, R.string.onLongClick_camera_button_string, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return true;
+            }
+        });
         Button gallery_button = findViewById(R.id.choose_photo_button);
         gallery_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,12 +102,28 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        gallery_button.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Snackbar.make(view, R.string.onLongClick_gallery_button_string, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return true;
+            }
+        });
         Button temp_button = findViewById(R.id._button);
         temp_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "TEMP BUTTON", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+        temp_button.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Snackbar.make(view, "TEMP BUTTON HEHE", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return true;
             }
         });
     }

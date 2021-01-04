@@ -15,4 +15,6 @@
     <string name="title_activity_camera">CameraActivity</string>
     <string name="title_activity_gallery">GalleryActivity</string>
     <string name="camera_view_content">camera view content</string>
+    <string name="onLongClick_gallery_button_string">Choose from gallery</string>
+    <string name="onLongClick_camera_button_string">Make new</string>
 </resources>
