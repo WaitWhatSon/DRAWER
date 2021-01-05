@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class StockImage {
     @SerializedName("large")
     private String imageSmall;
-    @SerializedName("original")
+    @SerializedName("large2x")
     private String imageOriginal;
 
     public String getImageSmall() {

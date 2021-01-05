@@ -56,6 +56,8 @@ public class StockImagesActivity extends AppCompatActivity {
         final ImageAdapter adapter = new ImageAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        fetchImagesData("popular");
         
         Button open_in_browser = findViewById(R.id.open_in_browser);
         open_in_browser.setOnClickListener(new View.OnClickListener() {
@@ -71,13 +73,20 @@ public class StockImagesActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Button button_from_load_stock_picture = findViewById(R.id.button_from_load_stock_picture);
+        button_from_load_stock_picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private class ImageHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView imagePreview;
         private TextView photoAuthor;
-        private TextView id;
 
         private StockImagesPack currentImage;
 
@@ -87,14 +96,13 @@ public class StockImagesActivity extends AppCompatActivity {
 
             imagePreview = itemView.findViewById(R.id.image_small_preview);
             photoAuthor = itemView.findViewById(R.id.photographer_text_view);
-            photoAuthor = itemView.findViewById(R.id.id);
         }
 
         public void bind(StockImagesPack image) {
             if (image != null)
             {
-                Log.d("HEHE", "IF NIE NULL");
                 currentImage = image;
+                photoAuthor.setText(image.getPhotographer());
                 if (image.getImages().getImageSmall() != null) {
                     Picasso.with(itemView.getContext())
                             .load(image.getImages().getImageSmall())
@@ -102,17 +110,11 @@ public class StockImagesActivity extends AppCompatActivity {
                 }
             }
             else
-                Log.d("HEHE", "SUPRAJS");
+                Log.d("IMAGE LOADING", "empty image");
         }
 
         @Override
         public void onClick(View v) {
-            if (currentImage.getImages().getImageOriginal() != null) {
-                Picasso.with(itemView.getContext())
-                        .load(currentImage.getImages().getImageOriginal())
-                        .placeholder(R.drawable.temp_image).into(imagePreview);
-            }
-
             if (currentImage.getImages().getImageOriginal() != null) {
                 Picasso.with(getApplicationContext()).load(currentImage.getImages().getImageOriginal()).into(new Target() {
                     @Override
@@ -139,20 +141,23 @@ public class StockImagesActivity extends AppCompatActivity {
                             }
                         }
                         Toast.makeText(getApplicationContext(), "Image Downloaded", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(StockImagesActivity.this, EditActivity.class);
+                        startActivity(intent);
                     }
 
                     @Override
                     public void onBitmapFailed(Drawable errorDrawable) {
+                        Snackbar.make(findViewById(R.id.activity_stock_images), "Could not save the image, sorry.",
+                                Snackbar.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        Snackbar.make(findViewById(R.id.activity_stock_images), "Prepare image to download.",
+                                Snackbar.LENGTH_LONG).show();
                     }
                 });
             }
-
-            Intent intent = new Intent(StockImagesActivity.this, EditActivity.class);
-            startActivity(intent);
         }
     }
 

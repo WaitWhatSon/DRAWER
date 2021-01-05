@@ -29,4 +29,5 @@
     <string name="draft_loading_string">Load draft - last edited photo</string>
     <string name="sock_images_button_info">Search for inspirations</string>
     <string name="search_for_inspiration">SEARCH FOR INSPIRATION</string>
+    <string name="photographer">photographer</string>
 </resources>

@@ -10,20 +10,16 @@
         android:id="@+id/image_small_preview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="fdsfjldsjflsdjfkjsldf"
+        android:layout_gravity="center_horizontal"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/photographer_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="fdsfjl"
+        android:layout_gravity="center_horizontal"
+        android:textSize="25sp"
+        android:text="@string/photographer"
         tools:ignore="MissingConstraints" />
 
 </LinearLayout>
