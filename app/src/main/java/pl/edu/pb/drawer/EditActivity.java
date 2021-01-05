@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ import java.util.UUID;
 public class EditActivity extends AppCompatActivity {
 
     ImageView edit_image_view;
+    static FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class EditActivity extends AppCompatActivity {
         loadImageFromStorage();
 
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container_view);
 
         if (fragment == null) {
@@ -77,4 +79,11 @@ public class EditActivity extends AppCompatActivity {
 
     }
 
+    public static void replaceFragment(Fragment fragment)
+    {
+        fragmentManager.beginTransaction()
+                .addToBackStack("Detailed filter")
+                .add(R.id.fragment_container_view, fragment)
+                .commit();
+    }
 }
