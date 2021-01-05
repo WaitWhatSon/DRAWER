@@ -25,4 +25,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="apply">Apply</string>
+    <string name="load_draft">LOAD DRAFT</string>
+    <string name="draft_loading_string">Load draft - last edited photo</string>
+    <string name="sock_images_button_info">Search for inspirations</string>
+    <string name="search_for_inspiration">SEARCH FOR INSPIRATION</string>
 </resources>

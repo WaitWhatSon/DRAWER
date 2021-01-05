@@ -249,4 +249,14 @@ public class CameraActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mCamera != null) {
+            mCamera.close();
+            mCamera = null;
+            finish();
+        }
+    }
 }

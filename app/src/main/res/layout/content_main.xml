@@ -25,10 +25,16 @@
             android:text="@string/choose_photo_string" />
 
         <Button
-            android:id="@+id/_button"
+            android:id="@+id/draft_load_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/_string" />
+            android:text="@string/load_draft" />
+
+        <Button
+            android:id="@+id/stock_images_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_for_inspiration" />
 
     </LinearLayout>
 

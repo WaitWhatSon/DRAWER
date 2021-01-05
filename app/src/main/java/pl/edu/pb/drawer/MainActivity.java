@@ -2,6 +2,8 @@ package pl.edu.pb.drawer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Matrix;
@@ -33,14 +35,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import java.io.File;
 import java.util.Arrays;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class MainActivity extends AppCompatActivity {
 
+
     Button camera_button;
     Button gallery_button;
-    Button temp_button;
+    Button draft_load_button;
+    Button stock_images_button;
 
     static int CAMERA_REQUEST = 1234;
     boolean camera_exists = false;
@@ -63,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // check if camera exists
         PackageManager pm = getPackageManager();
         if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             this.finish();
@@ -74,7 +80,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // przekierowanie do innych widoków
-        Button camera_button = findViewById(R.id.take_photo_button);
+        camera_button = findViewById(R.id.take_photo_button);
+        gallery_button = findViewById(R.id.choose_photo_button);
+        draft_load_button = findViewById(R.id.draft_load_button);
+        stock_images_button = findViewById(R.id.stock_images_button);
+
         if(!camera_exists) {
             camera_button.setEnabled(false);
         }
@@ -93,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        Button gallery_button = findViewById(R.id.choose_photo_button);
         gallery_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,22 +119,44 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        Button temp_button = findViewById(R.id._button);
-        temp_button.setOnClickListener(new View.OnClickListener() {
+        draft_load_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "TEMP BUTTON", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                startActivity(intent);
             }
         });
-        temp_button.setOnLongClickListener(new View.OnLongClickListener() {
+        draft_load_button.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Snackbar.make(view, "TEMP BUTTON HEHE", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, R.string.draft_loading_string, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 return true;
             }
         });
+        stock_images_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, StockImagesActivity.class);
+                startActivity(intent);
+            }
+        });
+        stock_images_button.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Snackbar.make(view, R.string.sock_images_button_info, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return true;
+            }
+        });
+
+        // if last file doesn't exist
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File f = new File(directory, "image.jpg");
+        if(f == null || !f.exists()) {
+            draft_load_button.setEnabled(false);
+        }
     }
 
     @Override
@@ -154,5 +185,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CheckIfDraftExists();
+
+    }
+
+    private void CheckIfDraftExists() {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File f = new File(directory, "image.jpg");
+        draft_load_button.setEnabled(f != null && f.exists());
     }
 }

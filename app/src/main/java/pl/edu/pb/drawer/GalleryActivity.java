@@ -54,10 +54,12 @@ public class GalleryActivity extends AppCompatActivity {
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
         if (EasyPermissions.hasPermissions(this, perms)) {
             // Already have permission, do the thing
+            gallery_open_button.setEnabled(true);
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(this,"Please grant permission",
                     LOCATION_REQUEST, perms);
+            gallery_open_button.setEnabled(true);
         }
     }
 
