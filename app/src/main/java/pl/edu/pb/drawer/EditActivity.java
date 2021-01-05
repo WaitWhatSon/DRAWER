@@ -11,6 +11,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.UUID;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -42,6 +45,17 @@ public class EditActivity extends AppCompatActivity {
         edit_image_view = findViewById(R.id.editing_picture_view);
         loadImageFromStorage();
 
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container_view);
+
+        if (fragment == null) {
+            fragment = new FiltersListFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.fragment_container_view, fragment)
+                    .commit();
+        }
+
     }
 
     private void loadImageFromStorage()
@@ -62,4 +76,5 @@ public class EditActivity extends AppCompatActivity {
         }
 
     }
+
 }

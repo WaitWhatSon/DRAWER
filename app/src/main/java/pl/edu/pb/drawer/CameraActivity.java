@@ -44,11 +44,13 @@ import java.util.Arrays;
 public class CameraActivity extends AppCompatActivity {
 
     CameraDevice mCamera = null;
-
     TextureView photo_texture;
+    FloatingActionButton button_photo;
     Button back_camera_button;
     Button take_photo_button;
     Button next_camera_button;
+
+    boolean photo_was_taken = false;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -66,34 +68,57 @@ public class CameraActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        photo_texture = findViewById(R.id.texture);
-
         startCamera();
 
-        FloatingActionButton button_photo = findViewById(R.id.start_camera);
+        button_photo = findViewById(R.id.start_camera); // start camera using
+        photo_texture = findViewById(R.id.texture); // start camera preview
+        back_camera_button = findViewById(R.id.back_camera_button); // back to previous activity or cam preview
+        take_photo_button = findViewById(R.id.take_photo_camera_button); // take a photo
+        next_camera_button = findViewById(R.id.next_camera_button); // edit taken photo
+
+        take_photo_button.setEnabled(false); // locked until preview didn't start
+        next_camera_button.setEnabled(false); // locked until photo wasn't taken
+
+        // starts camera preview and enables take photo button
         button_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startPreview();
                 button_photo.setVisibility(View.INVISIBLE);
+                take_photo_button.setEnabled(true);
             }
         });
 
-        back_camera_button = findViewById(R.id.back_camera_button);
+        // returns to previous activity if photo wasn't taken, restart preview if photo taken
         back_camera_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startPreview();
+                if(photo_was_taken)
+                {
+                    photo_was_taken = false;
+                    next_camera_button.setEnabled(false);
+                    take_photo_button.setEnabled(true);
+                    startPreview();
+                }
+                else
+                {
+                    finish();
+                }
             }
         });
-        take_photo_button = findViewById(R.id.take_photo_camera_button);
+
+        // takes photo, enables next button
         take_photo_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 takePhoto();
+                photo_was_taken = true;
+                next_camera_button.setEnabled(true);
+                take_photo_button.setEnabled(false);
             }
         });
-        next_camera_button = findViewById(R.id.next_camera_button);
+
+        // next activity - editing photo
         next_camera_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
