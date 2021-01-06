@@ -58,7 +58,6 @@ public class StockImagesActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         fetchImagesData("popular");
-        
         Button open_in_browser = findViewById(R.id.open_in_browser);
         open_in_browser.setOnClickListener(new View.OnClickListener() {
             @Override

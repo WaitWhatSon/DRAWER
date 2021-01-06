@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="pl.edu.pb.drawer.FiltersListFragment"
+        android:name="pl.edu.pb.drawer.FiltersFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/filters_list_fragment">
+        tools:layout="@layout/filters_fragment">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
@@ -67,9 +67,9 @@
     </fragment>
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="pl.edu.pb.drawer.FiltersListFragment"
+        android:name="pl.edu.pb.drawer.FiltersFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/filters_list_fragment">
+        tools:layout="@layout/filters_fragment">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"

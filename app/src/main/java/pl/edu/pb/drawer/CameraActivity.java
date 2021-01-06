@@ -160,13 +160,8 @@ public class CameraActivity extends AppCompatActivity {
 
     private void startPreview() {
         Matrix matrix = new Matrix();
-        RectF preview = new RectF(0, 0, 640, 480);
-        RectF texture = new RectF(0, 0, photo_texture.getWidth(), photo_texture.getHeight());
-        matrix.setRectToRect(preview, texture, Matrix.ScaleToFit.FILL);
-        //matrix.postScale(1.f, 1.f, preview.centerX(), preview.centerY());
         photo_texture.setTransform(matrix);
         SurfaceTexture surface = photo_texture.getSurfaceTexture();
-        surface.setDefaultBufferSize(640, 480);
         Surface s = new Surface(surface);
         try {
             CaptureRequest.Builder request = mCamera.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
@@ -194,13 +189,8 @@ public class CameraActivity extends AppCompatActivity {
 
     private void takePhoto() {
         Matrix matrix = new Matrix();
-        RectF preview = new RectF(0, 0, 640, 480);
-        RectF texture = new RectF(0, 0, photo_texture.getWidth(), photo_texture.getHeight());
-        matrix.setRectToRect(preview, texture, Matrix.ScaleToFit.FILL);
-        //matrix.postScale(1.f, 1.f, preview.centerX(), preview.centerY());
         photo_texture.setTransform(matrix);
         SurfaceTexture surface = photo_texture.getSurfaceTexture();
-        surface.setDefaultBufferSize(640, 480);
         Surface s = new Surface(surface);
         try {
             CaptureRequest.Builder request = mCamera.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
