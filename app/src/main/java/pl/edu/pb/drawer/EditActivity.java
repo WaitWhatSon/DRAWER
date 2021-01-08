@@ -37,7 +37,7 @@ import java.time.format.DateTimeFormatter;
 public class EditActivity extends AppCompatActivity {
 
     ImageView edit_image_view;
-    static Bitmap current_photo;
+    Bitmap current_photo;
     Bitmap original_photo;
 
     @Override
@@ -65,7 +65,7 @@ public class EditActivity extends AppCompatActivity {
 
         if (fragment == null) {
 
-            fragment = new FiltersFragment();
+            fragment = new FiltersFragment(current_photo);
             fragmentManager.beginTransaction()
                     .add(R.id.fragment_container_view, fragment)
                     .commit();
@@ -99,7 +99,7 @@ public class EditActivity extends AppCompatActivity {
         try {
             File f = new File(directory, "image.jpg");
             original_photo = BitmapFactory.decodeStream(new FileInputStream(f));
-            current_photo = original_photo;
+            current_photo = original_photo.copy(original_photo.getConfig(), true);
             UpdateCurrentImage();
         }
         catch (FileNotFoundException e)
