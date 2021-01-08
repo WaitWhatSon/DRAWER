@@ -30,4 +30,10 @@
     <string name="sock_images_button_info">Search for inspirations</string>
     <string name="search_for_inspiration">SEARCH FOR INSPIRATION</string>
     <string name="photographer">photographer</string>
+    <string name="niblack_string">NIBLACK</string>
+    <string name="sauvola_string">SAUVOLA</string>
+    <string name="sharpen_string">SHARPEN</string>
+    <string name="median_string">MEDIAN</string>
+    <string name="greyscale_string">GREYSCALE</string>
+    <string name="pixelize_string">PIXELIZE</string>
 </resources>

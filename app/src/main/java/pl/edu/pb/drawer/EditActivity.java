@@ -37,7 +37,8 @@ import java.time.format.DateTimeFormatter;
 public class EditActivity extends AppCompatActivity {
 
     ImageView edit_image_view;
-    static FragmentManager fragmentManager;
+    static Bitmap current_photo;
+    Bitmap original_photo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +60,11 @@ public class EditActivity extends AppCompatActivity {
         loadImageFromStorage();
 
 
-        fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container_view);
 
         if (fragment == null) {
+
             fragment = new FiltersFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.fragment_container_view, fragment)
@@ -75,8 +77,7 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    Bitmap bitmap = ((BitmapDrawable)edit_image_view.getDrawable()).getBitmap();
-                    SaveImage(bitmap);
+                    SaveImage(current_photo);
                     Snackbar.make(view, "Image saved.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
@@ -87,9 +88,6 @@ public class EditActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
 
     private void loadImageFromStorage()
@@ -100,8 +98,9 @@ public class EditActivity extends AppCompatActivity {
 
         try {
             File f = new File(directory, "image.jpg");
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-            edit_image_view.setImageBitmap(b);
+            original_photo = BitmapFactory.decodeStream(new FileInputStream(f));
+            current_photo = original_photo;
+            UpdateCurrentImage();
         }
         catch (FileNotFoundException e)
         {
@@ -169,4 +168,13 @@ public class EditActivity extends AppCompatActivity {
             return true;
         }
     }
+
+    public void UpdateCurrentImage()
+    {
+        if(current_photo != null)
+        {
+            edit_image_view.setImageBitmap(current_photo);
+        }
+    }
+
 }

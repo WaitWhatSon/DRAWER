@@ -3,12 +3,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".FiltersFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FiltersFragment"
+    android:id="@+id/filters_fragment_view">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/filter_item_name"
+
+    <ScrollView
+        android:id="@+id/filters_list_fragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        tools:ignore="ScrollViewCount">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_dialog_email"/>
+
+            <Button
+                android:id="@+id/greyscale_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/greyscale_string" />
+
+            <Button
+                android:id="@+id/median_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/median_string" />
+
+            <Button
+                android:id="@+id/sharpen_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sharpen_string" />
+
+            <Button
+                android:id="@+id/pixelize_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pixelize_string" />
+
+            <Button
+                android:id="@+id/niblack_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/niblack_string" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/sauvola_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sauvola_string" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </ScrollView>
 
 </FrameLayout>
