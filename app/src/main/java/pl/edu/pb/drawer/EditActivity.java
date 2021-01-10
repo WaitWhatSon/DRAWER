@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -72,6 +73,61 @@ public class EditActivity extends AppCompatActivity {
         }
 
         // top options
+        FloatingActionButton grid = findViewById(R.id.fab_grid);
+        grid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(current_photo != null)
+                {
+                    int x_step = current_photo.getWidth()/10;
+                    int y_step = current_photo.getHeight()/10;
+
+                    for(int x = x_step; x < current_photo.getWidth(); x+=x_step) {
+                        for (int y = 0; y < current_photo.getHeight(); y++) {
+                            current_photo.setPixel(x, y, Color.argb(255, 0, 0, 0));
+                        }
+                    }
+
+                    for(int y = y_step; y < current_photo.getHeight(); y+=y_step) {
+                        for (int x = 0; x < current_photo.getWidth(); x++) {
+                            current_photo.setPixel(x, y, Color.argb(255, 0, 0, 0));
+                        }
+                    }
+                }
+            }
+        });
+
+        FloatingActionButton sketch = findViewById(R.id.fab_sketch);
+        sketch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FiltersLibrary.MedianFilter(current_photo);
+                FiltersLibrary.GreyscaleFilter(current_photo);
+                FiltersLibrary.SharpenFilter(current_photo);
+            }
+        });
+
+        FloatingActionButton contures = findViewById(R.id.fab_contures);
+        contures.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FiltersLibrary.GreyscaleFilter(current_photo);
+                FiltersLibrary.MedianFilter(current_photo);
+                FiltersLibrary.NiblackFilter(current_photo, 2, -10);
+            }
+        });
+
+        FloatingActionButton reset = findViewById(R.id.fab_reset_img);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // copy from original
+                int [] pixels = new int[original_photo.getWidth() * original_photo.getHeight()];
+                original_photo.getPixels(pixels, 0, original_photo.getWidth(), 0, 0, original_photo.getWidth(), original_photo.getHeight());
+                current_photo.setPixels(pixels, 0, original_photo.getWidth(), 0, 0, original_photo.getWidth(), original_photo.getHeight());
+            }
+        });
+
         FloatingActionButton save = findViewById(R.id.fab_save);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,17 +142,6 @@ public class EditActivity extends AppCompatActivity {
                     Snackbar.make(view, "Cannot save image due to too old version.", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
-            }
-        });
-
-        FloatingActionButton reset = findViewById(R.id.fab_reset_img);
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // copy from original
-                int [] pixels = new int[original_photo.getWidth() * original_photo.getHeight()];
-                original_photo.getPixels(pixels, 0, original_photo.getWidth(), 0, 0, original_photo.getWidth(), original_photo.getHeight());
-                current_photo.setPixels(pixels, 0, original_photo.getWidth(), 0, 0, original_photo.getWidth(), original_photo.getHeight());
             }
         });
     }
@@ -119,7 +164,6 @@ public class EditActivity extends AppCompatActivity {
         }
 
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void SaveImage(Bitmap finalBitmap) {
