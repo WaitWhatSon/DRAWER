@@ -51,7 +51,6 @@ public class FiltersFragment extends Fragment {
         sauvola_button = view.findViewById(R.id.sauvola_button);
 
         greyscale_button.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
                 if(current_image != null)
@@ -78,7 +77,6 @@ public class FiltersFragment extends Fragment {
         });
 
         median_button.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
                 if(current_image != null)
@@ -114,14 +112,13 @@ public class FiltersFragment extends Fragment {
         });
 
         sharpen_button.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View v) {
                 if(current_image != null)
                 {
                     int[][] window = {{0, -1, 0}, {-1, 5, -1}, {0, -1, 0}};
                     Bitmap bitmap_copy = current_image.copy(current_image.getConfig(), true);
-                    //
+                    // WORKING SHARPEN
                     for(int x = 1; x < current_image.getWidth()-1; x++)
                     {
                         for(int y = 1; y < current_image.getHeight()-1; y++)
@@ -141,13 +138,78 @@ public class FiltersFragment extends Fragment {
                                     int G = Color.green(rgb);
                                     int B = Color.blue(rgb);
 
-                                    newPixelValueA += A;
-                                    newPixelValueR += window[yk+1][xk+1] * R;
-                                    newPixelValueG += window[yk+1][xk+1] * G;
-                                    newPixelValueB += window[yk+1][xk+1] * B;
+                                    newPixelValueA += window[xk+1][yk+1] * A;
+                                    newPixelValueR += window[xk+1][yk+1] * R;
+                                    newPixelValueG += window[xk+1][yk+1] * G;
+                                    newPixelValueB += window[xk+1][yk+1] * B;
                                 }
                             }
+
+                            if(newPixelValueA > 255) { newPixelValueA = 255; }
+                            if(newPixelValueR > 255) { newPixelValueR = 255; }
+                            if(newPixelValueG > 255) { newPixelValueG = 255; }
+                            if(newPixelValueB > 255) { newPixelValueB = 255; }
+
+                            if(newPixelValueA < 0) { newPixelValueA = 0; }
+                            if(newPixelValueR < 0) { newPixelValueR = 0; }
+                            if(newPixelValueG < 0) { newPixelValueG = 0; }
+                            if(newPixelValueB < 0) { newPixelValueB = 0; }
+
                             current_image.setPixel(x, y, Color.argb(newPixelValueA, newPixelValueR, newPixelValueG, newPixelValueB));
+                        }
+                    }
+                    image_view.setImageBitmap(current_image);
+                }
+            }
+        });
+
+        pixelize_button.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.Q)
+            @Override
+            public void onClick(View v) {
+                if(current_image != null)
+                {
+                    Bitmap bitmap_copy = current_image.copy(current_image.getConfig(), true);
+                    int block_size = 3;
+                    // WORKING PIXELIZE
+                    for(int x = block_size/2; x < (current_image.getWidth()-block_size/2); x+=block_size)
+                    {
+                        for(int y = block_size/2; y < (current_image.getHeight()-block_size/2); y+=block_size)
+                        {
+                            int newPixelValueA = 0;
+                            int newPixelValueR = 0;
+                            int newPixelValueG = 0;
+                            int newPixelValueB = 0;
+
+                            for(int xk = -block_size/2; xk <= block_size/2; xk++)
+                            {
+                                for(int yk = -block_size/2; yk <= block_size/2; yk++)
+                                {
+                                    int rgb = bitmap_copy.getPixel(x+xk, y+yk);
+                                    int A = Color.alpha(rgb);
+                                    int R = Color.red(rgb);
+                                    int G = Color.green(rgb);
+                                    int B = Color.blue(rgb);
+
+                                    newPixelValueA += A;
+                                    newPixelValueR += R;
+                                    newPixelValueG += G;
+                                    newPixelValueB += B;
+                                }
+                            }
+
+                            newPixelValueA /= block_size*block_size;
+                            newPixelValueR /= block_size*block_size;
+                            newPixelValueG /= block_size*block_size;
+                            newPixelValueB /= block_size*block_size;
+
+                            for(int xk = -block_size/2; xk <= block_size/2; xk++)
+                            {
+                                for(int yk = -block_size/2; yk <= block_size/2; yk++)
+                                {
+                                    current_image.setPixel(x+xk, y+yk, Color.argb(newPixelValueA, newPixelValueR, newPixelValueG, newPixelValueB));
+                                }
+                            }
                         }
                     }
                     image_view.setImageBitmap(current_image);
