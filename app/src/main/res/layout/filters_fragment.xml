@@ -19,11 +19,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
+            <!--ImageView
                 android:id="@+id/temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_dialog_email"/>
+                app:srcCompat="@android:drawable/ic_dialog_email"/-->
 
             <Button
                 android:id="@+id/greyscale_button"
@@ -56,12 +56,20 @@
                 android:text="@string/niblack_string" />
 
             <SeekBar
+                android:id="@+id/niblack_ratio"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:min="-2"
+                android:max="2"
+                android:progress="0"/>
 
             <SeekBar
+                android:id="@+id/niblack_offsetC"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:min="-10"
+                android:max="10"
+                android:progress="0"/>
 
             <Button
                 android:id="@+id/sauvola_button"
@@ -70,12 +78,20 @@
                 android:text="@string/sauvola_string" />
 
             <SeekBar
+                android:id="@+id/sauvola_ratio"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:min="-1"
+                android:max="1"
+                android:progress="0"/>
 
             <SeekBar
+                android:id="@+id/sauvola_div"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:min="-2"
+                android:max="2"
+                android:progress="0"/>
         </LinearLayout>
 
     </ScrollView>

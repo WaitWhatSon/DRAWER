@@ -88,6 +88,17 @@ public class EditActivity extends AppCompatActivity {
                 }
             }
         });
+
+        FloatingActionButton reset = findViewById(R.id.fab_reset_img);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // copy from original
+                int [] pixels = new int[original_photo.getWidth() * original_photo.getHeight()];
+                original_photo.getPixels(pixels, 0, original_photo.getWidth(), 0, 0, original_photo.getWidth(), original_photo.getHeight());
+                current_photo.setPixels(pixels, 0, original_photo.getWidth(), 0, 0, original_photo.getWidth(), original_photo.getHeight());
+            }
+        });
     }
 
     private void loadImageFromStorage()
