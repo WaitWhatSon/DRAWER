@@ -29,6 +29,7 @@ public class FiltersFragment extends Fragment {
     Button pixelize_button;
     Button niblack_button;
     Button sauvola_button;
+    SeekBar pixelize_ratio;
     SeekBar niblack_ratio;
     SeekBar niblack_offsetC;
     SeekBar sauvola_ratio;
@@ -62,6 +63,7 @@ public class FiltersFragment extends Fragment {
         pixelize_button = view.findViewById(R.id.pixelize_button);
         niblack_button = view.findViewById(R.id.niblack_button);
         sauvola_button = view.findViewById(R.id.sauvola_button);
+        pixelize_ratio = view.findViewById(R.id.pixelize_ratio);
         niblack_ratio = view.findViewById(R.id.niblack_ratio);
         niblack_offsetC = view.findViewById(R.id.niblack_offsetC);
         sauvola_ratio = view.findViewById(R.id.sauvola_ratio);
@@ -108,6 +110,17 @@ public class FiltersFragment extends Fragment {
             public void onClick(View v) {
                 FiltersLibrary.SauvolaFilter(current_image, sauvola_ratio_var, sauvola_div_var);
             }
+        });
+
+        pixelize_ratio.setMax(EditActivity.min_photo_size/2);
+        pixelize_ratio.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                block_size = progress;
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) { }
         });
 
         niblack_ratio.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

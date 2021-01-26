@@ -36,4 +36,15 @@
     <string name="median_string">MEDIAN</string>
     <string name="greyscale_string">GREYSCALE</string>
     <string name="pixelize_string">PIXELIZE</string>
+    <string name="logo_image">LOGO IMAGE</string>
+    <string name="quack">Quack!!!</string>
+    <string name="main_activity_string1">You\'ve got new drawing? I have nice filters. Check NEW PHOTO or CHOOSE PHOTO from your gallery.</string>
+    <string name="main_activity_string2">Don\'t know what to draw? How about ... SEARCH FOR INSPIRATION?</string>
+    <string name="main_activity_string3">Do you have any unfinished drafts? Lets check, LOAD DRAFT.</string>
+    <string name="edit_activity_string1">Try filters. They are awesome.</string>
+    <string name="edit_activity_string2">How about grayscale?</string>
+    <string name="edit_activity_string3">Add grid to your reference.</string>
+    <string name="edit_activity_string4">Reset photo? Click duck number 4.</string>
+    <string name="edit_activity_string5">Need contours? Click duck number 3.</string>
+    <string name="edit_activity_string6">Don\'t worry if you can\'t understand bottom filters. Just try.</string>
 </resources>

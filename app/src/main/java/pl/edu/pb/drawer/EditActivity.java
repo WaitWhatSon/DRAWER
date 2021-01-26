@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -34,12 +35,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 public class EditActivity extends AppCompatActivity {
 
     ImageView edit_image_view;
     Bitmap current_photo;
     Bitmap original_photo;
+
+    public static Integer min_photo_size = 3;
+
+    Random random;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +54,22 @@ public class EditActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        this.random = new Random();
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                String[] message = {
+                        getString(R.string.quack),
+                        getString(R.string.edit_activity_string1),
+                        getString(R.string.edit_activity_string2),
+                        getString(R.string.edit_activity_string3),
+                        getString(R.string.edit_activity_string4),
+                        getString(R.string.edit_activity_string5),
+                        getString(R.string.edit_activity_string6)};
+
+                Snackbar.make(view, message[random.nextInt(message.length)], Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -73,7 +90,7 @@ public class EditActivity extends AppCompatActivity {
         }
 
         // top options
-        FloatingActionButton grid = findViewById(R.id.fab_grid);
+        ImageButton grid = findViewById(R.id.fab_grid);
         grid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +114,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton sketch = findViewById(R.id.fab_sketch);
+        ImageButton sketch = findViewById(R.id.fab_sketch);
         sketch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,7 +124,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton contures = findViewById(R.id.fab_contures);
+        ImageButton contures = findViewById(R.id.fab_contures);
         contures.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,7 +134,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton reset = findViewById(R.id.fab_reset_img);
+        ImageButton reset = findViewById(R.id.fab_reset_img);
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,7 +145,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton save = findViewById(R.id.fab_save);
+        ImageButton save = findViewById(R.id.fab_save);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -157,6 +174,15 @@ public class EditActivity extends AppCompatActivity {
             original_photo = BitmapFactory.decodeStream(new FileInputStream(f));
             current_photo = original_photo.copy(original_photo.getConfig(), true);
             UpdateCurrentImage();
+
+            if(original_photo.getWidth() > original_photo.getHeight())
+            {
+                min_photo_size = original_photo.getHeight();
+            }
+            else
+            {
+                min_photo_size = original_photo.getWidth();
+            }
         }
         catch (FileNotFoundException e)
         {

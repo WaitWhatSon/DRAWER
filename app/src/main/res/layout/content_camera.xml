@@ -15,7 +15,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        app:tint="@null"
+        app:backgroundTint="@color/purple_500"
+        android:layout_margin="@dimen/fab_margin"
+        app:maxImageSize="@dimen/icon_size"
+        app:srcCompat="@mipmap/ic_camera" />
 
     <TextureView
         android:id="@+id/texture"

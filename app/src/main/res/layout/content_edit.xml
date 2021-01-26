@@ -32,40 +32,45 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints">
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <ImageButton
                     android:id="@+id/fab_grid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    app:srcCompat="@android:drawable/ic_dialog_email" />
+                    android:src="@drawable/grid_image"
+                    android:background="@drawable/roundcorner"/>
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <ImageButton
                     android:id="@+id/fab_sketch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    app:srcCompat="@android:drawable/ic_dialog_email" />
+                    android:src="@drawable/sketch_image"
+                    android:background="@drawable/roundcorner"/>
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <ImageButton
                     android:id="@+id/fab_contures"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    app:srcCompat="@android:drawable/ic_dialog_email" />
+                    android:src="@drawable/contour_image"
+                    android:background="@drawable/roundcorner"/>
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <ImageButton
                     android:id="@+id/fab_reset_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    app:srcCompat="@android:drawable/ic_dialog_email" />
+                    android:src="@drawable/original_image"
+                    android:background="@drawable/roundcorner"/>
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                <ImageButton
                     android:id="@+id/fab_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    app:srcCompat="@android:drawable/ic_dialog_email" />
+                    android:src="@drawable/save_image"
+                    android:background="@drawable/roundcorner"/>
 
         </LinearLayout>
 

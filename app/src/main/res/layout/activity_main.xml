@@ -30,7 +30,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
+        app:tint="@null"
+        app:backgroundTint="@color/purple_500"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:maxImageSize="@dimen/icon_size"
+        app:srcCompat="@mipmap/ic_duck_fab" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

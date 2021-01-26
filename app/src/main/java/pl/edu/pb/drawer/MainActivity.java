@@ -37,6 +37,7 @@ import android.widget.Button;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Random;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     Button gallery_button;
     Button draft_load_button;
     Button stock_images_button;
+
+    Random random;
 
     static int CAMERA_REQUEST = 1234;
     boolean camera_exists = false;
@@ -59,11 +62,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        this.random = new Random();
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                String[] message = {
+                        getString(R.string.quack),
+                        getString(R.string.main_activity_string1),
+                        getString(R.string.main_activity_string2),
+                        getString(R.string.main_activity_string3)};
+
+                Snackbar.make(view, message[random.nextInt(message.length)], Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -76,10 +87,10 @@ public class MainActivity extends AppCompatActivity {
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[] {Manifest.permission.CAMERA}, CAMERA_REQUEST);
         } else {
-            camera_exists = true; //startCamera();
+            camera_exists = true;
         }
 
-        // przekierowanie do innych widoków
+        // redirect to another activity
         camera_button = findViewById(R.id.take_photo_button);
         gallery_button = findViewById(R.id.choose_photo_button);
         draft_load_button = findViewById(R.id.draft_load_button);
@@ -158,29 +169,6 @@ public class MainActivity extends AppCompatActivity {
             draft_load_button.setEnabled(false);
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
