@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -24,8 +25,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Random;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -41,6 +45,11 @@ public class GalleryActivity extends AppCompatActivity {
     Button gallery_back_button;
     Button gallery_open_button;
     Button button_edit_loaded_picture;
+
+    Random random;
+
+    private static final String LOADED_IMAGE = "loaded image";
+    private Boolean image_choosen = false;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -70,12 +79,24 @@ public class GalleryActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        this.random = new Random();
+
         fab = findViewById(R.id.fab); // floating action button with tips
         gallery_back_button = findViewById(R.id.button_return_from_load_picture); // back to previous activity or cam preview
         gallery_open_button = findViewById(R.id.button_load_picture); // choose picture from gallery, unable next button
         button_edit_loaded_picture = findViewById(R.id.button_edit_loaded_picture); // next activity - edit image
 
         button_edit_loaded_picture.setEnabled(false); // locked until photo wasn't chosen
+
+        if(savedInstanceState != null) {
+            this.image_choosen = savedInstanceState.getBoolean(LOADED_IMAGE);
+            if (this.image_choosen)
+            {
+                loadImageFromStorage();
+                button_edit_loaded_picture.setEnabled(true);
+            }
+            Log.d("hm", "SET SAVED INSTANCE");
+        }
 
         // permissions check
         if (EasyPermissions.hasPermissions(this, galleryPermissions)) {
@@ -89,7 +110,11 @@ public class GalleryActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Choose from gallery", Snackbar.LENGTH_LONG)
+                String[] message = {
+                        getString(R.string.quack),
+                        getString(R.string.gallery_activity_string1)};
+
+                Snackbar.make(view, message[random.nextInt(message.length)], Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -139,7 +164,15 @@ public class GalleryActivity extends AppCompatActivity {
             saveToInternalStorage(BitmapFactory.decodeFile(picturePath));
 
             button_edit_loaded_picture.setEnabled(true);
+            this.image_choosen = true;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d("hm", "SAVE2");
+        outState.putBoolean(LOADED_IMAGE, image_choosen);
     }
 
     private void saveToInternalStorage(Bitmap bitmapImage){
@@ -164,5 +197,23 @@ public class GalleryActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void loadImageFromStorage()
+    {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+
+        try {
+            File f = new File(directory, "image.jpg");
+            imageView = findViewById(R.id.loaded_picture_view);
+            imageView.setImageBitmap(BitmapFactory.decodeStream(new FileInputStream(f)));
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
     }
 }

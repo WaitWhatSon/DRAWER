@@ -47,4 +47,11 @@
     <string name="edit_activity_string4">Reset photo? Click duck number 4.</string>
     <string name="edit_activity_string5">Need contours? Click duck number 3.</string>
     <string name="edit_activity_string6">Don\'t worry if you can\'t understand bottom filters. Just try.</string>
+    <string name="gallery_activity_string1">Choose your awesome photo from gallery. LOAD.</string>
+    <string name="author">author: </string>
+    <string name="you_may_like">You may like:</string>
+    <string name="filters">Filters:</string>
+    <string name="wait">wait...</string>
+    <string name="image_saved_string">Image saved.</string>
+    <string name="cannot_save_string">Cannot save image due to too old version.</string>
 </resources>

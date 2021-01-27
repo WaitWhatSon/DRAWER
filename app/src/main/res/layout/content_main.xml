@@ -13,8 +13,8 @@
         android:gravity="center">
 
         <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:scaleType="fitXY"
             android:src="@drawable/original_image"
             android:layout_margin="50dp"

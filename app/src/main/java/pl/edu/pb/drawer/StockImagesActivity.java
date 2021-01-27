@@ -45,10 +45,19 @@ import retrofit2.Response;
 
 public class StockImagesActivity extends AppCompatActivity {
 
+    private static final String WORD = "word_to_search";
+    String search_word = "popular";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_images);
+
+        if(savedInstanceState != null) {
+            search_word = savedInstanceState.getString(WORD);
+            Log.d("hm", "SET SAVED INSTANCE");
+        }
 
         RecyclerView recyclerView = findViewById(R.id.images_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -57,7 +66,7 @@ public class StockImagesActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        fetchImagesData("popular");
+        fetchImagesData(search_word);
         Button open_in_browser = findViewById(R.id.open_in_browser);
         open_in_browser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +110,7 @@ public class StockImagesActivity extends AppCompatActivity {
             if (image != null)
             {
                 currentImage = image;
-                photoAuthor.setText(image.getPhotographer());
+                photoAuthor.setText( getString(R.string.author) + " " + image.getPhotographer());
                 if (image.getImages().getImageSmall() != null) {
                     Picasso.with(itemView.getContext())
                             .load(image.getImages().getImageSmall())
@@ -211,6 +220,7 @@ public class StockImagesActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
+                search_word = query;
                 fetchImagesData(query);
                 return true;
             }
@@ -222,6 +232,13 @@ public class StockImagesActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d("hm", "SAVE");
+        outState.putString(WORD, search_word);
     }
 
     private void setupImagesListView(List<StockImagesPack> images) {

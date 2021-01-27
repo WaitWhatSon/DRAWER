@@ -27,6 +27,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Surface;
@@ -50,6 +51,7 @@ public class CameraActivity extends AppCompatActivity {
     Button take_photo_button;
     Button next_camera_button;
 
+    private static final String PHOTO_TAKEN = "photo_taken";
     boolean photo_was_taken = false;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -67,6 +69,13 @@ public class CameraActivity extends AppCompatActivity {
         setContentView(R.layout.activity_camera);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Log.d("hm", "CAMERA ON CREATE");
+
+        if(savedInstanceState != null) {
+            photo_was_taken = savedInstanceState.getBoolean(PHOTO_TAKEN);
+            Log.d("hm", "SET SAVED INSTANCE");
+        }
 
         startCamera();
 
@@ -127,6 +136,26 @@ public class CameraActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d("hm", "SAVE");
+        outState.putBoolean(PHOTO_TAKEN, photo_was_taken);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        Log.d("hm", "SAVE2");
+        outState.putBoolean(PHOTO_TAKEN, photo_was_taken);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d("hm", "RESTORE");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

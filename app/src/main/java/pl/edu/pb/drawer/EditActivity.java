@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -28,6 +29,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,11 +39,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
+import static pl.edu.pb.drawer.R.string.cannot_save_string;
+import static pl.edu.pb.drawer.R.string.image_saved_string;
+
 public class EditActivity extends AppCompatActivity {
 
     ImageView edit_image_view;
     Bitmap current_photo;
     Bitmap original_photo;
+
+    TextView wait;
 
     public static Integer min_photo_size = 3;
 
@@ -55,6 +62,9 @@ public class EditActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         this.random = new Random();
+
+        wait = findViewById(R.id.wait);
+        wait.setVisibility(View.INVISIBLE);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +106,7 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(current_photo != null)
                 {
+
                     int x_step = current_photo.getWidth()/10;
                     int y_step = current_photo.getHeight()/10;
 
@@ -111,6 +122,7 @@ public class EditActivity extends AppCompatActivity {
                         }
                     }
                 }
+                UpdateCurrentImage();
             }
         });
 
@@ -118,9 +130,11 @@ public class EditActivity extends AppCompatActivity {
         sketch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 FiltersLibrary.MedianFilter(current_photo);
                 FiltersLibrary.GreyscaleFilter(current_photo);
                 FiltersLibrary.SharpenFilter(current_photo);
+                UpdateCurrentImage();
             }
         });
 
@@ -128,9 +142,11 @@ public class EditActivity extends AppCompatActivity {
         contures.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 FiltersLibrary.GreyscaleFilter(current_photo);
                 FiltersLibrary.MedianFilter(current_photo);
                 FiltersLibrary.NiblackFilter(current_photo, 2, -10);
+                UpdateCurrentImage();
             }
         });
 
@@ -139,9 +155,11 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // copy from original
+
                 int [] pixels = new int[original_photo.getWidth() * original_photo.getHeight()];
                 original_photo.getPixels(pixels, 0, original_photo.getWidth(), 0, 0, original_photo.getWidth(), original_photo.getHeight());
                 current_photo.setPixels(pixels, 0, original_photo.getWidth(), 0, 0, original_photo.getWidth(), original_photo.getHeight());
+                UpdateCurrentImage();
             }
         });
 
@@ -149,14 +167,16 @@ public class EditActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     SaveImage(current_photo);
-                    Snackbar.make(view, "Image saved.", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, image_saved_string, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+
                 }
                 else
                 {
-                    Snackbar.make(view, "Cannot save image due to too old version.", Snackbar.LENGTH_LONG)
+                    Snackbar.make(view, cannot_save_string, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
             }
@@ -169,11 +189,38 @@ public class EditActivity extends AppCompatActivity {
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
 
+        Log.d("edit", "załadowane");
+
         try {
             File f = new File(directory, "image.jpg");
+
             original_photo = BitmapFactory.decodeStream(new FileInputStream(f));
+
+            int height = original_photo.getHeight();
+            int width = original_photo.getWidth();
+
+            Log.d("edit", "wys i szer");
+
+            // calculate new size
+
+            if(height > 800)
+            {
+                //temp_photo = Bitmap.createScaledBitmap(temp_photo, width*1000/height, 1000, true);
+                original_photo = Bitmap.createScaledBitmap(original_photo, width*800/height, 800, true);
+                Log.d("edit", ">1000");
+            }
+            else if(width > 800)
+            {
+                //temp_photo = Bitmap.createScaledBitmap(temp_photo, width*1000/height, 1000, true);
+                original_photo = Bitmap.createScaledBitmap(original_photo, 800, height*800/width, true);
+                Log.d("edit", ">1000");
+            }
+
+            //original_photo = original_photo.copy(temp_photo.getConfig(), true);
             current_photo = original_photo.copy(original_photo.getConfig(), true);
             UpdateCurrentImage();
+
+            Log.d("edit", "current h=" + original_photo.getHeight() + " w=" + original_photo.getWidth());
 
             if(original_photo.getWidth() > original_photo.getHeight())
             {
